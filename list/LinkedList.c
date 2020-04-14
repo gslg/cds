@@ -20,6 +20,14 @@ void InsertAtIndex(int data, int index);
 //删除指定index处的节点
 void Delete(int index);
 
+//循环反转链表
+void Reverse();
+
+//递归反转链表
+void ReverseRecursive();
+
+struct Node *getNode(struct Node *node);
+
 //打印
 void Print();
 
@@ -128,6 +136,48 @@ void Delete(int index)
     free(del);
 }
 
+//循环方式
+void Reverse()
+{
+    struct Node *pre, *current, *next;
+    current = head;
+    pre = NULL;
+    next = NULL;
+
+    while (current != NULL)
+    {
+        next = current->next; //next指向当前节点下一个节点
+        current->next = pre;  //将当前节点的next指向pre节点
+        pre = current;        //将pre指向当前
+        current = next;       //下一个节点
+    }
+
+    head = pre;
+}
+
+//递归反转
+void ReverseRecursive()
+{
+    getNode(head);
+}
+
+struct Node *getNode(struct Node *node)
+{
+    if (node == NULL)
+        return NULL;
+
+    if (node->next == NULL) //末尾节点
+        return node;
+
+    head = node->next; //如果不是末尾节点，那么head指针往下依次移动
+
+    struct Node *tailNode = getNode(node->next);
+    tailNode->next = node; //将指向反过来
+    node->next = NULL;     //当前node的next指向NULL
+
+    return node;
+}
+
 void Print()
 {
     struct Node *temp = head;
@@ -169,6 +219,12 @@ int main(int argc, char *argv[])
     Print();
 
     Delete(3); //7 8 6 10 1 2 3 4
+    Print();
+
+    Reverse(); // 4 3 2 1 10 6 8 7
+    Print();
+
+    ReverseRecursive();
     Print();
 
     return 0;
